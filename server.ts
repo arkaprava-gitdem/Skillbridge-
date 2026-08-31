@@ -356,19 +356,15 @@ async function startServer() {
     });
   }
 
+  if (!process.env.VERCEL) {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`SkillBridge Full-Stack Server running at http://0.0.0.0:${PORT}`);
+    });
+  }
+
   return app;
 }
 
-if (!process.env.VERCEL) {
-  startServer().then((server) => {
-    server.listen(PORT, '0.0.0.0', () => {
-      console.log(
-        `SkillBridge Full-Stack Server running at http://0.0.0.0:${PORT}`
-      );
-    });
-  });
-}
+startServer();
 
 export default app;
-
-startServer();
