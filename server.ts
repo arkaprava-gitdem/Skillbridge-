@@ -344,18 +344,31 @@ async function startServer() {
       server: { middlewareMode: true },
       appType: 'spa',
     });
+
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
+
     app.use(express.static(distPath));
+
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`SkillBridge Full-Stack Server running at http://0.0.0.0:${PORT}`);
+  return app;
+}
+
+if (!process.env.VERCEL) {
+  startServer().then((server) => {
+    server.listen(PORT, '0.0.0.0', () => {
+      console.log(
+        `SkillBridge Full-Stack Server running at http://0.0.0.0:${PORT}`
+      );
+    });
   });
 }
+
+export default app;
 
 startServer();
